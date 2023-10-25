@@ -1,6 +1,8 @@
 {
+  "name": "niuktok-frontend",
+  "version": "0.0.0",
   "private": true,
-  "author": "gongjiahao <2640018189@qq.com>",
+  "author": "GfromYH",
   "scripts": {
     "dev": "max dev",
     "build": "max build",
@@ -8,7 +10,8 @@
     "postinstall": "max setup",
     "setup": "max setup",
     "start": "npm run dev",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "release": "standard-version"
   },
   "lint-staged": {
     "@(src|test|scripts|mock)/**/*.@(js|jsx)": [
