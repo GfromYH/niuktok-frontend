@@ -6,7 +6,7 @@ import {Avatar as AntdAvatar} from 'antd'
 import LoginModal from '../LoginModal'
 
 const Avatar = (props) => {
-  const {name} = props
+  const {name,size} = props
   const [open, setOpen] = useState(false)
 
   
@@ -25,10 +25,10 @@ const Avatar = (props) => {
     setOpen(false)
   }
   const AvatarContent =      
-    <AntdAvatar 
+  <AntdAvatar 
     {...props}
     style={{ backgroundColor: '#f56a00', verticalAlign: 'middle', cursor:'pointer' }} 
-    size="large" 
+    size={size}
     onClick={handleVisibleLogin}
   >
     {name}
@@ -48,11 +48,13 @@ const Avatar = (props) => {
 Avatar.propTypes={
   url: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  size: PropTypes.number.isRequired,
 }
 
 Avatar.defaultProps = {
   url: '',
   name: '登录',
+  size: 40
 };
 
 export default Avatar;

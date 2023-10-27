@@ -13,6 +13,19 @@ import {
 const Routes = [
   { path: '/', redirect: '/home' },
   {
+    path: '/self',
+    component: '@/layouts/BasicLayout',
+    name: '我的',
+    layout: false,
+    icon: BarChartOutlined,
+    routes: [
+      {
+        path: '/self',
+        component: '@/pages/Self'
+      }
+    ]
+  },
+  {
     path: '/home',
     name: '首页',
     component: '@/layouts/BasicLayout',

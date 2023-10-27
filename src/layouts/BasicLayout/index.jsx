@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React,{useState,useEffect} from 'react';
 import {
   AppstoreOutlined,
   BarChartOutlined,
@@ -43,7 +43,6 @@ const items = () => {
       ))
     }
   })
-  console.log(res)
   return res;
 }
 

@@ -14,6 +14,17 @@ export default defineConfig({
   routes: [
     { path: '/', redirect: '/home' },
     {
+      path: '/self',
+      component: '@/layouts/BasicLayout',
+      layout: false,
+      routes: [
+        {
+          path: '',
+          component: '@/pages/Self',
+        }
+      ]
+    },
+    {
       path: '/home',
       component: '@/layouts/BasicLayout',
       layout: false,

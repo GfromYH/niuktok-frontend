@@ -59,7 +59,7 @@ const LoginModal = (props) => {
       form={regesterForm}
       name="regesterForm"
       onFinish={onFinish}
-      style={{ maxWidth: 400 }}
+      style={{ maxWidth: 480 }}
     >
       <Form.Item name="username" rules={[{ required: true }]}>
         <Input placeholder='用户名' />
