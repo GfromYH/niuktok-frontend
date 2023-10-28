@@ -39,15 +39,28 @@ const Routes = [
     ]
   },
   {
-    path: '/recommend',
+    path: '/hot',
     component: '@/layouts/BasicLayout',
-    name: '推荐',
+    name: '热门',
     layout: false,
     icon: BarChartOutlined,
     routes: [
       {
-        path: '/recommend',
-        component: '@/pages/Recommend'
+        path: '',
+        component: '@/pages/Hot'
+      }
+    ]
+  },
+  {
+    path: '/sport',
+    component: '@/layouts/BasicLayout',
+    name: '体育',
+    layout: false,
+    icon: BarChartOutlined,
+    routes: [
+      {
+        path: '',
+        component: '@/pages/Sport'
       }
     ]
   }

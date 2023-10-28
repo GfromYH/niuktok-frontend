@@ -41,8 +41,10 @@ const Self = () => {
     },
   ];
   useEffect(()=>{
-    setSearchParams({tab: activeKey});
-  },[])
+    const tab = searchParams.get('tab');
+    if(!tab) setSearchParams({tab: activeKey});
+    
+  }, [location.href])
   return (
     <div>
       <Info />

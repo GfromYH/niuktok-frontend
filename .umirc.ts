@@ -30,19 +30,30 @@ export default defineConfig({
       layout: false,
       routes: [
         {
-          path: '/home',
+          path: '',
           component: '@/pages/Home'
         }
       ]
     },
     {
-      path: '/recommend',
+      path: '/hot',
       component: '@/layouts/BasicLayout',
       layout: false,
       routes: [
         {
-          path: '/recommend',
-          component: '@/pages/Recommend'
+          path: '',
+          component: '@/pages/Hot'
+        }
+      ]
+    },
+    {
+      path: '/sport',
+      component: '@/layouts/BasicLayout',
+      layout: false,
+      routes: [
+        {
+          path: '',
+          component: '@/pages/Sport'
         }
       ]
     }
