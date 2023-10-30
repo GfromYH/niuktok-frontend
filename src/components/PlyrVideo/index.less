@@ -1,14 +1,62 @@
-:global{
-  .plyr__controls .plyr__controls__item.plyr__progress__container{
-    width: 100%;
+.plyrContainer{
+  position: relative;
+  video{
+    width: 80%;
+    margin: 0 auto;
+  }
+  .actionBar{
+    width: 10%;
     position: absolute;
-    bottom: 40px;
-    padding-left: calc(var(--plyr-control-spacing, 10px));
+    right: 0;
+    bottom: 80px;
+    :global{
+      .ant-space-item{
+        span{
+          font-size: 15px;
+          color: #eee;
+          svg{
+            font-size: 36px;
+            transition: width .5s ease-in-out, height .5s ease-in-out;
+            &:hover{
+              cursor: pointer;
+              width: 42px;
+              height: 42px;
+            }
+          }
+        }
+      }
+    }
   }
-  .plyr__controls .plyr__controls__item:first-child{
-    margin-right: 0;
-  }
-  .plyr__controls .plyr__controls__item:nth-child(2){
-    margin-right: auto;
+  :global{
+    .plyr__video-wrapper{
+      background-color: #333;
+    }
+    .plyr__controls .plyr__controls__item.plyr__progress__container{
+      width: 100%;
+      position: absolute;
+      bottom: 40px;
+      padding-left: calc(var(--plyr-control-spacing, 10px));
+    }
+    .plyr__controls .plyr__controls__item:first-child{
+      margin-right: 0;
+    }
+    .plyr__controls .plyr__controls__item:nth-child(2){
+      margin-right: auto;
+    }
+    .plyr__control--overlaid{
+      background-color: transparent;
+      &:hover{
+        background-color: transparent;
+      }
+      svg{
+        width: 48px;
+        height: 48px;
+      }
+    }
+    .plyr--video .plyr__control:focus-visible, .plyr--video .plyr__control{
+      &:hover{
+        background-color: transparent;
+      }
+    }
   }
 }
