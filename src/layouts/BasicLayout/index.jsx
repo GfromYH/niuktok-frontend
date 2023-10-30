@@ -66,7 +66,7 @@ const BasicLayout = () => {
       </Sider>
       <Layout className="site-layout" >
         <Header />
-        <Content style={{height: 'calc( 100vh - 72px )',padding: '12px 0 12px 12px', overflow: 'hidden', background: '#333'  }}>
+        <Content style={{height: 'calc( 100vh - 72px )',padding: '12px 0 12px 12px', overflow: 'hidden', background: colorBgContainer  }}>
           <Outlet />
         </Content>
         {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer> */}
