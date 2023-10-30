@@ -56,28 +56,20 @@ const BasicLayout = () => {
   const {pathname}=location
 
   return (
-    <Layout hasSider>
+    <Layout hasSider style={{minHeight:'100vh'}}>
       <Sider
-        style={{
-          overflow: 'auto',
-          height: '100vh',
-          position: 'fixed',
-          left: 0,
-          top: 0,
-          bottom: 0,
-        }}
+        breakpoint="lg"
+        collapsedWidth="0"
       >
         <Logo url="" />
         <Menu theme="dark" mode="inline" selectedKeys={[pathname]} defaultSelectedKeys={[pathname]} items={items()} />
       </Sider>
-      <Layout className="site-layout" style={{ marginLeft: 200 }}>
+      <Layout className="site-layout" >
         <Header />
-        <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-          <div style={{ padding: 24, textAlign: 'center', background: colorBgContainer }}>
-            <Outlet />
-          </div>
+        <Content style={{height: 'calc( 100vh - 72px )',padding: '12px 0 12px 12px', overflow: 'hidden', background: '#333'  }}>
+          <Outlet />
         </Content>
-        <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
+        {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer> */}
       </Layout>
     </Layout>
   );

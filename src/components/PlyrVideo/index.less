@@ -1,5 +1,22 @@
 .plyrContainer{
   position: relative;
+  text-align: center;
+  height: 100%;
+  .videoInfo{
+    font-size: 14px;
+    color: #eee;
+    position: absolute;
+    bottom: 70px;
+    left: 20px;
+    p{
+      margin: 0;
+      padding: 0;
+      width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
   video{
     width: 80%;
     margin: 0 auto;
@@ -9,6 +26,10 @@
     position: absolute;
     right: 0;
     bottom: 80px;
+    opacity: .8;
+    &:hover{
+      opacity: 1;
+    }
     :global{
       .ant-space-item{
         span{
@@ -28,8 +49,12 @@
     }
   }
   :global{
+    .plyr{
+      height: 100%;
+    }
     .plyr__video-wrapper{
       background-color: #333;
+      height: 100%;
     }
     .plyr__controls .plyr__controls__item.plyr__progress__container{
       width: 100%;

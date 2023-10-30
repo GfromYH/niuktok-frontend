@@ -12,14 +12,17 @@ const Header = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   return (
-    <div className={styles.header} style={{backgroundColor:colorBgContainer}}>
-      <Flex justify='flex-end' align='center'>
-        <Space size={20}>
+      <Flex 
+        justify='flex-end' 
+        align='center'
+        className={styles.header} 
+        style={{backgroundColor:colorBgContainer}}
+      >
+        <Space size={20} align='center'>
           <Popover text='消息' description='这是一条测试消息' buttonFuc={()=>console.log("aaa")} buttonText="立即登陆"></Popover>
           <Avatar name='登录' url="" ></Avatar>
         </Space>
       </Flex>
-    </div>
   );
 };
 

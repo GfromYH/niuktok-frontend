@@ -9,14 +9,17 @@ import {
   LikeFilled,
   MessageFilled,
   StarFilled,
-  ShareAltOutlined
+  ShareAltOutlined,
+  UpCircleFilled,
+  DownCircleFilled
 } from '@ant-design/icons';
 import { ACTION_ACTIVE_COLOR, ACTION_NORMAL_COLOR } from '@/common/enum';
+import Avatar from '../Avatar';
 
 
 
 const PlyrVideo = (props)=>{
-  const { videoSrc,videoType } = props;
+  const { videoSrc,videoType,style } = props;
   const [isLike,setIsLike] = useState(false);
   const [isStorage,setIsStorage] = useState(false);
   const videoRef = useRef();
@@ -49,11 +52,15 @@ const PlyrVideo = (props)=>{
 
   }
   return (
-    <div className={styles.plyrContainer}>
+    <div className={styles.plyrContainer} style={style}>
       <video className={styles.plyrVideo}  ref={videoRef} controls  playsInline>
         <source size={576} src={videoSrc} type={videoType || 'video/mp4'} />
       </video>
       <Space className={styles.actionBar} align='center' direction='vertical' size={20}>
+        {/* <Space direction='vertical' size={10}>
+          <UpCircleFilled />
+          <DownCircleFilled />
+        </Space> */}
         <Space direction='vertical'  size={10} onClick={handleLike} >
           <LikeFilled style={{color:isLike?ACTION_ACTIVE_COLOR.LIKE:ACTION_NORMAL_COLOR.LIKE}} name="点赞" />
           <span>233.2万</span>
@@ -70,6 +77,10 @@ const PlyrVideo = (props)=>{
           <ShareAltOutlined name="分享" />
           <span>233.2万</span>
         </Space>
+      </Space>
+      <Space direction='vertical' size={20} align='start' className={styles.videoInfo}>
+        <Avatar size={36}></Avatar>
+        <p name="这是一条视频描述">这是一条视频的描述这是一条视频的描述这是一条视频的描述这是一条视频的描述这是一条视频的描述</p>
       </Space>
     </div>
   );
