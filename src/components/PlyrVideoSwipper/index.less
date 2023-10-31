@@ -1,0 +1,24 @@
+.container{
+  height: 100%;
+  display: flex;
+  position: relative;
+  .video{
+    flex: 1;
+    transition-duration: 250ms;
+  }
+  .switchBar{
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #333;
+    svg{
+      color: #eee;
+      font-size: 36px;
+      &:hover{
+        cursor: pointer;
+        color: #fff;
+      }
+    }
+  }
+}

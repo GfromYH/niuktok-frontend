@@ -1,32 +1,19 @@
-import Guide from '@/components/Guide';
-import { trim } from '@/utils/format';
-import { PageContainer } from '@ant-design/pro-components';
+import {useRef,useEffect,useState} from 'react';
 import { useModel } from '@umijs/max';
-import PlyrVideo from '@/components/PlyrVideo'
 import styles from './index.less';
-import { Space,Flex } from 'antd';
-import {
-  LikeFilled,
-  MessageFilled,
-  StarFilled,
-  ShareAltOutlined,
-  UpCircleFilled,
-  DownCircleFilled
-} from '@ant-design/icons';
+import PlyrVideoSwipper from '@/components/PlyrVideoSwipper'
+
 
 const Hot = () => {
   const { name } = useModel('global');
+
+  useEffect(()=>{
+
+  },[])
+ 
   return (
     <div className={styles.container}>
-      <div className={styles.video} style={{height:'100%'}}>
-        <PlyrVideo></PlyrVideo>
-        <PlyrVideo style={{marginTop:12}}></PlyrVideo>
-        <PlyrVideo style={{marginTop:12}}></PlyrVideo>
-      </div>
-      <Space className={styles.switchBar} direction='vertical' size={10} >
-          <UpCircleFilled name='上一个'/>
-          <DownCircleFilled name='下一个'/>
-      </Space>
+      <PlyrVideoSwipper></PlyrVideoSwipper>
     </div>
   );
 };
