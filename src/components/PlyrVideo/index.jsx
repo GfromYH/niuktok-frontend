@@ -19,7 +19,7 @@ import Avatar from '../Avatar';
 
 
 const PlyrVideo = (props)=>{
-  const { videoSrc,videoType,style } = props;
+  const { videoSrc,videoType,style,hideActionBar } = props;
   const [isLike,setIsLike] = useState(false);
   const [isStorage,setIsStorage] = useState(false);
   const videoRef = useRef();
@@ -56,7 +56,7 @@ const PlyrVideo = (props)=>{
       <video className={styles.plyrVideo}  ref={videoRef} controls  playsInline>
         <source size={576} src={videoSrc} type={videoType || 'video/mp4'} />
       </video>
-      <Space className={styles.actionBar} align='center' direction='vertical' size={20}>
+      <Space style={{display: hideActionBar && 'none'}} className={styles.actionBar} align='center' direction='vertical' size={20}>
         {/* <Space direction='vertical' size={10}>
           <UpCircleFilled />
           <DownCircleFilled />
@@ -90,13 +90,15 @@ const PlyrVideo = (props)=>{
 PlyrVideo.propTypes={
   id: PropTypes.string.isRequired,
   videoSrc: PropTypes.string.isRequired,
-  videoType: PropTypes.string.isRequired
+  videoType: PropTypes.string.isRequired,
+  hideActionBar: PropTypes.bool.isRequired
 }
 
 PlyrVideo.defaultProps={
   id: '#player',
   videoSrc: "https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4",
-  videoType: ""
+  videoType: "",
+  hideActionBar: false
 }
 
 export default PlyrVideo

@@ -11,7 +11,7 @@ import {
 } from '@ant-design/icons';
 
 const Routes = [
-  { path: '/', redirect: '/home' },
+  { path: '/', redirect: '/hot' },
   {
     path: '/self',
     component: '@/layouts/BasicLayout',
@@ -20,21 +20,8 @@ const Routes = [
     icon: BarChartOutlined,
     routes: [
       {
-        path: '/self',
+        path: '',
         component: '@/pages/Self'
-      }
-    ]
-  },
-  {
-    path: '/home',
-    name: '首页',
-    component: '@/layouts/BasicLayout',
-    layout: false,
-    icon: AppstoreOutlined,
-    routes: [
-      {
-        path: '/home',
-        component: '@/pages/Home'
       }
     ]
   },
@@ -63,7 +50,20 @@ const Routes = [
         component: '@/pages/Sport'
       }
     ]
-  }
+  },
+  {
+    path: '/game',
+    name: '游戏',
+    component: '@/layouts/BasicLayout',
+    layout: false,
+    icon: AppstoreOutlined,
+    routes: [
+      {
+        path: '',
+        component: '@/pages/Game'
+      }
+    ]
+  },
 ]
 
 export default Routes;

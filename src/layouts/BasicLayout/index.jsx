@@ -60,13 +60,18 @@ const BasicLayout = () => {
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
+        style={{
+          position:'sticky',
+          left:0,
+          zIndex:1
+        }}
       >
         <Logo url="" />
         <Menu theme="dark" mode="inline" selectedKeys={[pathname]} defaultSelectedKeys={[pathname]} items={items()} />
       </Sider>
       <Layout className="site-layout" >
         <Header />
-        <Content style={{height: 'calc( 100vh - 72px )',padding: '12px 0 12px 12px', overflow: 'hidden', background: colorBgContainer  }}>
+        <Content style={{height: 'calc( 100vh - 72px )',padding: '12px 0 12px 12px', overflow: pathname.includes('hot')?'hidden':'initial', background: colorBgContainer  }}>
           <Outlet />
         </Content>
         {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer> */}

@@ -4,14 +4,14 @@
   "private": true,
   "author": "GfromYH",
   "scripts": {
-    "dev": "max dev",
     "build": "max build",
+    "dev": "max dev",
     "format": "prettier --cache --write .",
     "postinstall": "max setup",
-    "setup": "max setup",
-    "start": "npm run dev",
     "prepare": "husky install",
-    "release": "standard-version"
+    "release": "standard-version",
+    "setup": "max setup",
+    "start": "npm run dev"
   },
   "lint-staged": {
     "@(src|test|scripts|mock)/**/*.@(js|jsx)": [
