@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect, useRef} from 'react';
 import {
   AppstoreOutlined,
   BarChartOutlined,
@@ -53,23 +53,31 @@ const BasicLayout = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const {pathname}=location
+  const {pathname}=location;
+  const [layoutMarginLeft,setLayoutMarginLeft]=useState(200);
 
+  const onBreakpoint=(broken)=>{
+   setLayoutMarginLeft(broken?0:200)
+  }
+  
   return (
     <Layout hasSider style={{minHeight:'100vh'}}>
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
         style={{
-          position:'sticky',
+          position:'fixed',
           left:0,
-          zIndex:1
+          zIndex:1,
+          height:'100vh',
+          top:0
         }}
+        onBreakpoint={onBreakpoint}
       >
         <Logo url="" />
         <Menu theme="dark" mode="inline" selectedKeys={[pathname]} defaultSelectedKeys={[pathname]} items={items()} />
       </Sider>
-      <Layout className="site-layout" >
+      <Layout className="site-layout" style={{marginLeft:layoutMarginLeft}}>
         <Header />
         <Content style={{height: 'calc( 100vh - 72px )',padding: '12px 0 12px 12px', overflow: pathname.includes('hot')?'hidden':'initial', background: colorBgContainer  }}>
           <Outlet />
