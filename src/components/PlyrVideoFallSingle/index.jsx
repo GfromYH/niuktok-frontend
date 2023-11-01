@@ -4,7 +4,7 @@ import "plyr/dist/plyr.css";
 import PropTypes from 'prop-types';
 import settings from './default';
 import styles from './index.less';
-import { Space,message,Flex,Avatar } from 'antd';
+import { Space,message,Flex,Avatar, Button } from 'antd';
 import {
   LikeFilled,
   MessageFilled,
@@ -18,7 +18,7 @@ import { ACTION_ACTIVE_COLOR, ACTION_NORMAL_COLOR } from '@/common/enum';
 
 
 const PlyrVideoFallSingle = (props)=>{
-  const { id,videoSrc,videoType,style,hideActionBar } = props;
+  const { id,videoSrc,videoType,style,hideActionBar,isWork,onEdit,onDelete } = props;
   const [isLike,setIsLike] = useState(false);
   const [isStorage,setIsStorage] = useState(false);
   const videoRef = useRef();
@@ -65,6 +65,16 @@ const PlyrVideoFallSingle = (props)=>{
           <span>@ GJH</span>
         </Space>
       </Flex>
+      {
+        isWork ?
+        <Flex className={styles.info} justify='space-between' align='center'>
+        <Space  style={{fontSize:16}}  size={10} >
+          <Button  type='link' onClick={onEdit}>修改</Button>
+          <Button danger type='link' onClick={onDelete}>删除</Button>
+        </Space>
+        </Flex>:
+        <></>
+      }
     </div>
   );
 }
@@ -75,14 +85,20 @@ PlyrVideoFallSingle.propTypes={
   videoSrc: PropTypes.string.isRequired,
   videoType: PropTypes.string.isRequired,
   hideActionBar: PropTypes.bool.isRequired,
-  style:PropTypes.object
+  style:PropTypes.object,
+  isWork:PropTypes.bool,
+  onEdit:PropTypes.func,
+  onDelete:PropTypes.func
 }
 
 PlyrVideoFallSingle.defaultProps={
   id: '#player',
   videoSrc: "https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4",
   videoType: "",
-  hideActionBar: false
+  hideActionBar: false,
+  isWork:false,
+  onEdit:()=>{},
+  onDelete:()=>{}
 }
 
 export default PlyrVideoFallSingle

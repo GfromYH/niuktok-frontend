@@ -4,6 +4,7 @@ import PlyrVideoFallSingle from '../PlyrVideoFallSingle';
 import PropTypes from 'prop-types'
 
 const PlyrVideoFall=(props)=>{
+  const {gap,isWork,onDelete,onEdit} = props;
   const fallRef=useRef(null)
   const [videos,setVideos] = useState([])
   useLayoutEffect(() => {
@@ -17,6 +18,9 @@ const PlyrVideoFall=(props)=>{
           key={`play${i}`}
           id={`play${i}`}
           style={{ width: itemWidth }}
+          isWork={isWork}
+          onDelete={onDelete}
+          onEdit={onEdit}
         />
       );
     }
@@ -75,7 +79,6 @@ const PlyrVideoFall=(props)=>{
   }
 
   const waitFall=(items)=>{
-    const gap = 12;
     const clientWidth=fallRef.current.clientWidth;
     const columns = _perColumnNum(fallRef.current.clientWidth);
      //首先确定列数 = 页面的宽度 / 图片的宽度
@@ -83,16 +86,15 @@ const PlyrVideoFall=(props)=>{
      let itemWidth = Math.floor(clientWidth/columns);
      let arr = [];//定义一个数组，用来存储元素的高度
      let arrW = [];//定义一个数组，用来存储元素的距离左边的宽度
-     console.log(itemWidth)
      for(let i = 0;i < items.length; i++){
         const item = document.getElementById(`play${i}`)
         item.style.width=`${itemWidth}px`;
         // item.style.height=`${Math.random(0,1)* 250}px`
          if(i < columns) {
              //满足这个条件则说明在第一行，文章里面有提到
-            item.style.transform=`translate(${itemWidth*i-5}px,0)`;
-            arrW.push(itemWidth*i-5);
-            arr.push(item.offsetHeight+12);
+            item.style.transform=`translate(${itemWidth*i-gap}px,0)`;
+            arrW.push(itemWidth*i-gap);
+            arr.push(item.offsetHeight+gap);
          }else {
              //其他行，先找出最小高度列，和索引
              //假设最小高度是第一个元素
@@ -109,7 +111,7 @@ const PlyrVideoFall=(props)=>{
              item.style.transform=`translate(${arrW[index]}px,${arr[index]}px)`;
              //修改最小列的高度
              //最小列的高度 = 当前自己的高度 + 拼接过来的高度 + 间隙的高度
-             arr[index] = arr[index] + item.offsetHeight + 12;
+             arr[index] = arr[index] + item.offsetHeight + gap;
          }
      }
   }
@@ -127,11 +129,19 @@ const PlyrVideoFall=(props)=>{
 }
 
 PlyrVideoFall.propTyeps = {
-  videos: PropTypes.array.isRequired
+  videos: PropTypes.array.isRequired,
+  gap:PropTypes.number.isRequired, //瀑布流上下之间的间距
+  isWork:PropTypes.bool.isRequired,
+  onEdit:PropTypes.func.isRequired,
+  onDelete:PropTypes.func.isRequired
 }
 
 PlyrVideoFall.defaultProps = {
-  videos:[]
+  videos:[],
+  gap:12,
+  isWork:false,
+  onEdit:()=>{},
+  onDelete:()=>{}
 }
 
 

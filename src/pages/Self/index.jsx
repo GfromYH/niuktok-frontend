@@ -9,6 +9,8 @@ import Work from './Work'
 import History from './History'
 import Like from './Like'
 
+
+
 const Self = () => {
   const { name } = useModel('global');
   const [activeKey, setActiveKey] = useState('like')
@@ -22,22 +24,22 @@ const Self = () => {
     {
       key: 'work',
       label: '作品',
-      children: Work,
+      children: <Work />,
     },
     {
       key: 'like',
       label: '喜欢',
-      children: Like,
+      children: <Like />,
     },
     {
       key: 'collection',
       label: '收藏',
-      children: Collection,
+      children:  <Collection />,
     },
     {
       key: 'history',
       label: '历史记录',
-      children: History,
+      children: <History />,
     },
   ];
   useEffect(()=>{
