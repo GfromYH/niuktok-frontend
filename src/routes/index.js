@@ -64,6 +64,18 @@ const Routes = [
       }
     ]
   },
+  {
+    path: '/search',
+    name: '搜索',
+    component: '@/layouts/BasicLayout',
+    layout: false,
+    routes: [
+      {
+        path: '',
+        component: '@/pages/Search'
+      }
+    ]
+  },
 ]
 
 export default Routes;

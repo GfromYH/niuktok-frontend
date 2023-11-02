@@ -68,7 +68,7 @@ const BasicLayout = () => {
         style={{
           position:'fixed',
           left:0,
-          zIndex:1,
+          zIndex:2,
           height:'100vh',
           top:0
         }}
@@ -77,7 +77,7 @@ const BasicLayout = () => {
         <Logo url="" />
         <Menu theme="dark" mode="inline" selectedKeys={[pathname]} defaultSelectedKeys={[pathname]} items={items()} />
       </Sider>
-      <Layout className="site-layout" style={{marginLeft:layoutMarginLeft}}>
+      <Layout className="site-layout" style={{marginLeft:layoutMarginLeft,marginTop:60}}>
         <Header />
         <Content style={{height: 'calc( 100vh - 72px )',padding: '12px 0 12px 12px', overflow: pathname.includes('hot')?'hidden':'initial', background: colorBgContainer  }}>
           <Outlet />

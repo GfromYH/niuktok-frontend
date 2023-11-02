@@ -1,0 +1,68 @@
+.container{
+  font-size: 16px;
+
+  .accountCard{
+    min-width: 400px;
+    background-color: rgb(230, 232, 232);
+    margin-bottom: 20px;
+    .description{
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 0;
+    }
+    .name{
+      font-size: 24px;
+      max-width: 100px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+}
+@media screen and (max-width: 1025px) {
+  .container{
+    .accountContainer{
+      justify-content: center;
+    }
+    .accountCard{
+      width: 800px;
+    }
+  }
+}
+
+@media screen and (max-width: 1096px) {
+  .container{
+    .accountContainer{
+      justify-content: center;
+    }
+    .accountCard{
+      width: 540px;
+    }
+  }
+}
+
+
+
+@media screen and (max-width: 1340px) and (min-width: 1096px){
+  .container{
+    .accountContainer{
+      justify-content: center;
+    }
+    .accountCard{
+      width: 429px;
+    }
+  }
+}
+
+@media screen and (min-width: 1340px){
+  .container{
+  
+    .accountCard{
+      width: 429px;
+    }
+  }
+}
+
