@@ -17,9 +17,8 @@ import { ACTION_ACTIVE_COLOR, ACTION_NORMAL_COLOR } from '@/common/enum';
 import Avatar from '../Avatar';
 
 
-
 const PlyrVideo = (props)=>{
-  const { videoSrc,videoType,style,hideActionBar } = props;
+  const { videoSrc,videoType,style,hideActionBar,toggleCommitPanel } = props;
   const [isLike,setIsLike] = useState(false);
   const [isStorage,setIsStorage] = useState(false);
   const videoRef = useRef();
@@ -28,8 +27,17 @@ const PlyrVideo = (props)=>{
 
     const playerInstance = new Plyr(videoRef.current, settings);
     
-
+    playerInstance.on("enterfullscreen",(e)=>{
+      // console.log(e)
+      videoRef.current.style.width='100%';
+    })
+    playerInstance.on("exitfullscreen",(e)=>{
+      // console.log(e)
+      videoRef.current.style.width='80%';
+    })
     return () => {
+      playerInstance.off("enterfullscreen",()=>{})
+      playerInstance.off("exitfullscreen",()=>{})
       playerInstance.destroy();
     }
   }, []);
@@ -39,8 +47,8 @@ const PlyrVideo = (props)=>{
     message.success(!isLike?"已点赞！":"已取消！")
   }
 
-  const handleCommit=()=>{
-
+  const handleCommit=(value)=>{
+    toggleCommitPanel(value)
   }
 
   const handleStorage=()=>{
@@ -65,7 +73,7 @@ const PlyrVideo = (props)=>{
           <LikeFilled style={{color:isLike?ACTION_ACTIVE_COLOR.LIKE:ACTION_NORMAL_COLOR.LIKE}} name="点赞" />
           <span>233.2万</span>
         </Space>
-        <Space direction='vertical'  size={10} onClick={handleCommit} >
+        <Space direction='vertical'  size={10} onClick={()=>handleCommit('initial')} >
           <MessageFilled name="评论" />
           <span>233.2万</span>
         </Space>
@@ -82,6 +90,7 @@ const PlyrVideo = (props)=>{
         <Avatar size={36}></Avatar>
         <p name="这是一条视频描述">这是一条视频的描述这是一条视频的描述这是一条视频的描述这是一条视频的描述这是一条视频的描述</p>
       </Space>
+
     </div>
   );
 }
@@ -91,14 +100,16 @@ PlyrVideo.propTypes={
   id: PropTypes.string.isRequired,
   videoSrc: PropTypes.string.isRequired,
   videoType: PropTypes.string.isRequired,
-  hideActionBar: PropTypes.bool.isRequired
+  hideActionBar: PropTypes.bool.isRequired,
+  toggleCommitPanel:PropTypes.func.isRequired
 }
 
 PlyrVideo.defaultProps={
   id: '#player',
   videoSrc: "https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4",
   videoType: "",
-  hideActionBar: false
+  hideActionBar: false,
+  toggleCommitPanel:()=>{}
 }
 
 export default PlyrVideo

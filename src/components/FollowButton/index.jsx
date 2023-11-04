@@ -10,7 +10,7 @@ import styles from './index.less';
 
 
 const FollowButton = (props)=>{
-  const { isFollow, toggleFollow } = props
+  const { isFollow, toggleFollow,dark } = props
   const {
     token: { 
       colorBgContainerDisabled,
@@ -21,23 +21,28 @@ const FollowButton = (props)=>{
   const btnStyle= isFollow ? {
     backgroundColor:colorBgContainerDisabled,
     borderColor:colorBorder,
-    color:colorTextDisabled,
+    color:dark?'#fff':colorTextDisabled,
   } : {};
   const btnText= isFollow ? (
     <><CheckOutlined style={{marginRight:8}} />已关注</>
   ) : (
     <><PlusOutlined style={{marginRight:8}} />关注</>
   )
-  return <Button type='primary' style={btnStyle} onClick={toggleFollow}>{btnText}</Button>
+  return (
+      <Button  type='primary' style={btnStyle} onClick={toggleFollow}>{btnText}</Button>
+  )
+
 }
 
 FollowButton.propTypes={
   isFollow: PropTypes.bool.isRequired,
-  toggleFollow: PropTypes.func.isRequired
+  toggleFollow: PropTypes.func.isRequired,
+  dark:PropTypes.bool
 }
 
 FollowButton.defaultProps={
   isFollow: true,
+  dark:false
 }
 
 
