@@ -1,6 +1,7 @@
 .plyrContainer{
   position: absolute;
   text-align: center;
+  pointer-events: all;
   // height: 300px;
   margin-bottom: 12px;
   // transition: all .3s ease-in-out;
@@ -8,6 +9,16 @@
   border-radius: 4px;
   box-shadow: 1px 0 1px gray;
   cursor: pointer;
+  .enterIcon{
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 20px;
+    color: #eee;
+    &:hover{
+      color: #fff;
+    }
+  }
   .info{
     padding: 10px;
     background-color: #f6f3f3;

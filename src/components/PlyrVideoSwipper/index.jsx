@@ -12,14 +12,16 @@ import {
   StarFilled,
   ShareAltOutlined,
   UpCircleFilled,
-  DownCircleFilled
+  DownCircleFilled,
+  CloseOutlined
 } from '@ant-design/icons';
 import PropTypes from 'prop-types'
+import classnames from 'classnames'
 import CommitPanel from '@/components/CommitPanel'
 
 
 const PlyrVideoSwipper = (props) => {
-  const {nextFuncAPI,preFuncAPI,videos} = props
+  const {nextFuncAPI,preFuncAPI,videos,fixed,exit} = props
   const { name } = useModel('global');
   const ref= useRef(null)
   const commitRef = useRef(null);
@@ -39,7 +41,7 @@ const PlyrVideoSwipper = (props) => {
       return;
     }
     videoIndexCp-=1;
-    let calcString=`calc( ${videoIndexCp} * ( -100vh + 72px ) )`;
+    let calcString=fixed?`calc( ${videoIndexCp} * ( -100vh - 12px ) )`:`calc( ${videoIndexCp} * ( -100vh + 72px ) )`;
     ref.current.style.transform=`translateY(${calcString})`;
     setVideoIndex(videoIndexCp)
     setVideoGroup(videoGroup)
@@ -49,7 +51,7 @@ const PlyrVideoSwipper = (props) => {
     let videoIndexCp=videoIndex
     if(videoIndexCp===videoGroup.length-1) videoGroup.push(<PlyrVideo toggleCommitPanel={togglePanel}></PlyrVideo>);
     videoIndexCp+=1;
-    let calcString=`calc(${videoIndexCp}*( -100vh + 72px ))`;
+    let calcString=fixed?`calc(${videoIndexCp}*( -100vh - 12px))`:`calc(${videoIndexCp}*( -100vh + 72px ))`;
     ref.current.style.transform=`translateY(${calcString})`;
     setVideoGroup(videoGroup)
     setVideoIndex(videoIndexCp)
@@ -60,7 +62,9 @@ const PlyrVideoSwipper = (props) => {
     commitRef.current.style.display=value
   }
   return (
-    <div className={styles.container}>
+    <div className={classnames(styles.container,{
+      [`${styles.fixedContainer}`]: fixed
+    })}>
       <div ref={ref} className={styles.video} style={{height:'100%'}}>
         {
           videoGroup.map((item)=>item)
@@ -69,7 +73,7 @@ const PlyrVideoSwipper = (props) => {
       <div ref={commitRef} style={{width:'30%',display:'none'}}>
         <CommitPanel togglePanel={togglePanel}></CommitPanel>
       </div>
-      
+      <CloseOutlined onClick={exit} style={{display:fixed?'initial':'none'}} className={styles.closeIcon} />
       <Space className={styles.switchBar} direction='vertical' size={10} >
           <UpCircleFilled style={{cursor:videoIndex===0?'not-allowed':'pointer'}} name='上一个' onClick={handlePre} />
           <DownCircleFilled name='下一个' onClick={handleNext} />
@@ -83,12 +87,18 @@ PlyrVideoSwipper.propTypes={
   videos: PropTypes.array.isRequired,
   nextFuncAPI: PropTypes.func.isRequired,
   preFuncAPI: PropTypes.func.isRequired,
+  fixed: PropTypes.bool.isRequired,
+  exit:PropTypes.func
 }
+
+
 
 PlyrVideoSwipper.defaultProps={
   videos: [],
   nextFuncAPI: ()=>console.log("下一个"),
   preFuncAPI: ()=>console.log("上一个"),
+  fixed:false,
+  exit:()=>{}
 }
 
 export default PlyrVideoSwipper;

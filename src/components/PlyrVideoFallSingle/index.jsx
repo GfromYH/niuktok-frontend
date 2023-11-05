@@ -1,4 +1,4 @@
-import React,{ useEffect, useState, useRef } from 'react';
+import React,{ useEffect, useState, useRef, useLayoutEffect } from 'react';
 import Plyr from 'plyr';
 import "plyr/dist/plyr.css";
 import PropTypes from 'prop-types';
@@ -12,23 +12,34 @@ import {
   ShareAltOutlined,
   UpCircleFilled,
   DownCircleFilled,
-  LikeOutlined
+  LikeOutlined,
+  ExpandOutlined
 } from '@ant-design/icons';
 import { ACTION_ACTIVE_COLOR, ACTION_NORMAL_COLOR } from '@/common/enum';
 
 
 const PlyrVideoFallSingle = (props)=>{
-  const { id,videoSrc,videoType,style,hideActionBar,isWork,onEdit,onDelete } = props;
+  const { id,videoSrc,videoType,style,hideActionBar,isWork,onEdit,onDelete,customEnter } = props;
   const [isLike,setIsLike] = useState(false);
   const [isStorage,setIsStorage] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef();
+  const plyrRef = useRef(null);
   useEffect(() => {
     if(!videoRef.current) return;
 
     const playerInstance = new Plyr(videoRef.current, settings);
-    
-
+    plyrRef.current=playerInstance
+    playerInstance.on('play',(e)=>{
+      // console.log("触发播放",e)
+      // if(customEnter) {
+      //   customEnter(id);
+      //   playerInstance.stop();
+      //   return;
+      // }
+    })
     return () => {
+      playerInstance.off('play',()=>{})
       playerInstance.destroy();
     }
   }, []);
@@ -50,11 +61,51 @@ const PlyrVideoFallSingle = (props)=>{
   const handleShare=()=>{
 
   }
+
+  const handleMouseEnter = () => {
+    if (!isPlaying) {
+      setIsPlaying(true);
+      if (plyrRef.current) {
+        plyrRef.current.pause(); // 先暂停视频
+        plyrRef.current.play();
+      }
+    }
+  };
+  
+  const handleMouseLeave = () => {
+    if (isPlaying) {
+      setIsPlaying(false);
+      if (plyrRef.current) {
+        plyrRef.current.pause();
+      }
+    }
+  };
+
+  const handleEnter=()=>{
+    if(plyrRef.current){
+      console.log("aaa")
+      plyrRef.current.pause()
+      customEnter(id)
+    }
+  }
+
   return (
-    <div id={id} className={styles.plyrContainer} style={style}>
-      <video preload='none' className={styles.plyrVideo}  ref={videoRef} controls  playsInline>
-        <source size={576} src={videoSrc} type={videoType || 'video/mp4'} />
+    <div id={id}   className={styles.plyrContainer} style={style}>
+      <video
+        preload='none'         
+        className={styles.plyrVideo}  
+        ref={videoRef} 
+        controls  
+        playsInline>
+          <source size={576} src={videoSrc} type={videoType || 'video/mp4'} />
+       
       </video>
+      {/* <div
+        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      /> */}
+      <ExpandOutlined onClick={handleEnter} className={styles.enterIcon} />
       <Flex className={styles.info} justify='space-between' align='center'>
         <Space  style={{fontSize:16}}  size={10} >
           <LikeOutlined name="点赞" />
@@ -88,7 +139,8 @@ PlyrVideoFallSingle.propTypes={
   style:PropTypes.object,
   isWork:PropTypes.bool,
   onEdit:PropTypes.func,
-  onDelete:PropTypes.func
+  onDelete:PropTypes.func,
+  customEnter:PropTypes.func
 }
 
 PlyrVideoFallSingle.defaultProps={
@@ -98,7 +150,8 @@ PlyrVideoFallSingle.defaultProps={
   hideActionBar: false,
   isWork:false,
   onEdit:()=>{},
-  onDelete:()=>{}
+  onDelete:()=>{},
+  customEnter:()=>{}
 }
 
 export default PlyrVideoFallSingle

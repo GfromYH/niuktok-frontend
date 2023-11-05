@@ -4,7 +4,7 @@ import PlyrVideoFallSingle from '../PlyrVideoFallSingle';
 import PropTypes from 'prop-types'
 
 const PlyrVideoFall=(props)=>{
-  const {gap,isWork,onDelete,onEdit} = props;
+  const {gap,isWork,onDelete,onEdit,enter} = props;
   const fallRef=useRef(null)
   const [videos,setVideos] = useState([])
   useLayoutEffect(() => {
@@ -21,6 +21,7 @@ const PlyrVideoFall=(props)=>{
           isWork={isWork}
           onDelete={onDelete}
           onEdit={onEdit}
+          customEnter={enter}
         />
       );
     }
@@ -133,7 +134,8 @@ PlyrVideoFall.propTyeps = {
   gap:PropTypes.number.isRequired, //瀑布流上下之间的间距
   isWork:PropTypes.bool.isRequired,
   onEdit:PropTypes.func.isRequired,
-  onDelete:PropTypes.func.isRequired
+  onDelete:PropTypes.func.isRequired,
+  enter: PropTypes.func.isRequired
 }
 
 PlyrVideoFall.defaultProps = {
@@ -141,7 +143,8 @@ PlyrVideoFall.defaultProps = {
   gap:12,
   isWork:false,
   onEdit:()=>{},
-  onDelete:()=>{}
+  onDelete:()=>{},
+  enter:()=>{}
 }
 
 

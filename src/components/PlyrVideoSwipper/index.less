@@ -22,3 +22,24 @@
     }
   }
 }
+
+.fixedContainer{
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  width: 100vw;
+  transition: all 250ms ease-in-out;
+  .closeIcon{
+    position: absolute;
+    left: 60px;
+    top: 60px;
+    font-size: 60px;
+    color: #eee;
+    cursor: pointer;
+    &:hover{
+      color: #fff;
+    }
+
+  }
+}
