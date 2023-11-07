@@ -3,7 +3,8 @@ import { request } from '@umijs/max';
 import {
   infoAPI,
   loginAPI,
-  registerAPI
+  registerAPI,
+  logoutAPI
 } from '../api'
 
 
@@ -50,3 +51,15 @@ export async function info(
   }
 
 }
+
+// 登出
+export async function logout(
+  ) {
+    const res = await request(logoutAPI.url,{
+      ...logoutAPI,
+    });
+    if(res.status===0){
+      return res.data;
+    }
+  
+  }

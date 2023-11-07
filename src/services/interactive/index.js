@@ -6,49 +6,109 @@ import {
   likeAPI,
   cancelLikeAPI,
   cancelShareAPI,
-  cancelStorageAPI
+  cancelStorageAPI,
+  viewAPI,
+  videoDetailAPI
 } from '../api'
 
 
-// 登录
-export async function login(
+// 点赞
+export async function like(
   params,
   cb=()=>{}
 ) {
-  const data = await request(loginAPI.url,{
-    ...loginAPI,
+  const res = await request(`${likeAPI.url}/${params.videoID}`,{
+    method:likeAPI.method,
+    headers:likeAPI.headers,
     data: {
       ...params,
     },
   });
-  if(data.status===0){
+  if(res.status===0){
     cb();
   }
 }
 
-// 注册
-export async function register(
+// 收藏
+export async function storage(
   params,
   cb=()=>{}
 ) {
-  const data = await request(registerAPI.url,{
-    ...registerAPI,
+  const res = await request(`${storageAPI.url}/${params.videoID}`,{
+    method:storageAPI.method,
+    headers:storageAPI.headers,
     data: {
       ...params,
     },
   });
-  if(data.status===0){
+  if(res.status===0){
+    cb();
+  }
+}
+// 取消收藏
+export async function cancelStorage(
+  params,
+  cb=()=>{}
+) {
+  const res = await request(`${cancelStorageAPI.url}/${params.videoID}`,{
+    method:cancelStorageAPI.method,
+    headers:cancelStorageAPI.headers,
+    data: {
+      ...params,
+    },
+  });
+  if(res.status===0){
     cb();
   }
 }
 
-// 个人信息
-export async function info(
+// 取消点赞
+export async function cancelLike(
+  params,
+  cb=()=>{}
 ) {
-  const res = await request(infoAPI.url,{
-    ...infoAPI,
+  const res = await request(`${cancelLikeAPI.url}/${params.videoID}`,{
+    method:cancelLikeAPI.method,
+    headers:cancelLikeAPI.headers,
+    data: {
+      ...params,
+    },
   });
-  if(data.status===0){
-    return res.data;
+  if(res.status===0){
+    cb();
   }
 }
+
+// 观看视频
+export async function view(
+  params,
+  cb=()=>{}
+) {
+  const videoID=params.videoID
+  delete params.videoID
+  const res = await request(`${viewAPI.url}/${videoID}`,{
+    method:viewAPI.method,
+    headers:viewAPI.headers,
+    data:{
+      ...params
+    }
+  });
+  if(res.status===0){
+    cb();
+  }
+}
+
+// 视频详情
+export async function videoDetail(
+  params,
+  cb=()=>{}
+) {
+  const res = await request(`${videoDetailAPI.url}/${params.videoID}`,{
+    method:videoDetailAPI.method,
+    headers:videoDetailAPI.headers,
+  });
+  if(res.status===0){
+    cb();
+  }
+}
+

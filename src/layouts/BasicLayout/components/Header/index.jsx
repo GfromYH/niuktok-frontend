@@ -16,7 +16,7 @@ const Header = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const {isLogin} = userStore()
+  const {isLogin,user} = userStore()
   const [searchParams,setSearchParams]= useSearchParams()
   useEffect(()=>{
     const s = searchParams.get('s');
@@ -51,7 +51,7 @@ const Header = () => {
         />
         <Space size={20} align='center'>
           <Popover hideButton text='消息' description='这是一条测试消息' buttonFuc={()=>console.log("aaa")} buttonText="立即登陆"></Popover>
-          <Avatar name='登录' url="" ></Avatar>
+          <Avatar name={user?.username||'登录'} url={user?.avatar} ></Avatar>
         </Space>
       </Flex>
   );

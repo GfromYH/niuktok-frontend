@@ -15,6 +15,12 @@ export const registerAPI={
   headers: { 'Content-Type': 'application/json' },
 }
 
+export const logoutAPI={
+  url: `${backEndUrl}/auth-service/logout`,
+  method:'POST',
+  headers: { 'Content-Type': 'application/json' },
+}
+
 //user-service
 // 个人信息
 export const infoAPI={
@@ -59,7 +65,7 @@ export const shareAPI={
 }
 
 // 观看视频
-export const cancelShareAPI={
+export const viewAPI={
   url: `${backEndUrl}/interactive-service/op/view`,
   method:'PUT',
   headers: { 'Content-Type': 'application/json' },
@@ -102,3 +108,47 @@ export const pullVideoAPI={
   method:'GET',
   headers: { 'Content-Type': 'text/html; charset=utf-8' },
 }
+
+// 视频详情
+export const videoDetailAPI={
+  url: `${backEndUrl}/video-service/ua/detail`,
+  method:'GET',
+  headers: { 'Content-Type': 'text/html; charset=utf-8' },
+}
+
+
+// 个人收藏的作品
+export const favoriteAPI={
+  url: `${backEndUrl}/video-service/favorites`,
+  method:'GET',
+  headers: { 'Content-Type': 'text/html; charset=utf-8' },
+}
+
+// 个人喜欢的作品
+export const selfLikeAPI={
+  url: `${backEndUrl}/video-service/likes`,
+  method:'GET',
+  headers: { 'Content-Type': 'text/html; charset=utf-8' },
+}
+
+// 个人作品
+export const mimeAPI={
+  url: `${backEndUrl}/video-service/mime`,
+  method:'GET',
+  headers: { 'Content-Type': 'text/html; charset=utf-8' },
+}
+
+// 个人最近分享作品
+export const selfShareAPI={
+  url: `${backEndUrl}/video-service/share`,
+  method:'GET',
+  headers: { 'Content-Type': 'text/html; charset=utf-8' },
+}
+
+// 个人最近观看的作品
+export const viewsAPI={
+  url: `${backEndUrl}/video-service/views`,
+  method:'GET',
+  headers: { 'Content-Type': 'text/html; charset=utf-8' },
+}
+

@@ -21,7 +21,7 @@ import CommitPanel from '@/components/CommitPanel'
 
 
 const PlyrVideoSwipper = (props) => {
-  const {nextFuncAPI,preFuncAPI,videos,fixed,exit,fetchVideos} = props
+  const {nextFuncAPI,preFuncAPI,videos,fixed,exit,fetchVideos,isSwipper} = props
   const { name } = useModel('global');
   const ref= useRef(null)
   const commitRef = useRef(null);
@@ -65,7 +65,7 @@ const PlyrVideoSwipper = (props) => {
       <div ref={ref} className={styles.video} style={{height:'100%'}}>
         {
           videos.map((item)=>{
-            return <PlyrVideo key={item.id} id={item.id} data={item} toggleCommitPanel={togglePanel} ></PlyrVideo>
+            return <PlyrVideo key={item.id} id={item.id} data={item} fetchVideos={()=>fetchVideos(videos.length)} toggleCommitPanel={togglePanel} ></PlyrVideo>
           })
         }
       </div>
@@ -73,10 +73,13 @@ const PlyrVideoSwipper = (props) => {
         <CommitPanel togglePanel={togglePanel}></CommitPanel>
       </div>
       <CloseOutlined onClick={exit} style={{display:fixed?'initial':'none'}} className={styles.closeIcon} />
-      <Space className={styles.switchBar} direction='vertical' size={10} >
-          <UpCircleFilled style={{cursor:videoIndex===0?'not-allowed':'pointer'}} name='上一个' onClick={handlePre} />
-          <DownCircleFilled name='下一个' onClick={handleNext} />
-      </Space>
+      {
+        isSwipper?<Space className={styles.switchBar} direction='vertical' size={10} >
+            <UpCircleFilled style={{cursor:videoIndex===0?'not-allowed':'pointer'}} name='上一个' onClick={handlePre} />
+            <DownCircleFilled name='下一个' onClick={handleNext} />
+        </Space>:
+         <></>
+      }
     </div>
   );
 };
@@ -88,7 +91,8 @@ PlyrVideoSwipper.propTypes={
   preFuncAPI: PropTypes.func.isRequired,
   fixed: PropTypes.bool.isRequired,
   exit:PropTypes.func,
-  fetchVideos:PropTypes.func
+  fetchVideos:PropTypes.func,
+  isSwipper:PropTypes.bool
 }
 
 
@@ -99,7 +103,8 @@ PlyrVideoSwipper.defaultProps={
   preFuncAPI: ()=>console.log("上一个"),
   fixed:false,
   exit:()=>{},
-  fetchVideos:()=>{}
+  fetchVideos:()=>{},
+  isSwipper:true
 }
 
 export default PlyrVideoSwipper;

@@ -5,7 +5,13 @@ import {
   getQiniuTokenAPI,
   pullVideoAPI,
   exitVideoAPI,
-  getVideoPathAPI
+  getVideoPathAPI,
+  favoriteAPI,
+  selfLikeAPI,
+  selfShareAPI,
+  mimeAPI,
+  viewsAPI,
+  likeAPI
 } from '../api'
 
 
@@ -50,3 +56,79 @@ export async function pullVideo(
     return res.data;
   }
 }
+
+// 个人收藏的作品
+export async function selfFavorite(
+  params
+) {
+  const res = await request(favoriteAPI.url,{
+    ...favoriteAPI,
+    params:{
+      ...params
+    }
+  });
+  if(res.status===0){
+    return res.data;
+  }
+}
+
+// 个人喜欢的作品
+export async function selfLikes(
+  params
+) {
+  const res = await request(selfLikeAPI.url,{
+    ...selfLikeAPI,
+    params:{
+      ...params
+    }
+  });
+  if(res.status===0){
+    return res.data;
+  }
+}
+
+// 个人分享的作品
+export async function selfShare(
+  params
+) {
+  const res = await request(selfShare.url,{
+    ...selfShare,
+    params:{
+      ...params
+    }
+  });
+  if(res.status===0){
+    return res.data;
+  }
+}
+
+// 个人历史观看的作品
+export async function selfViews(
+  params
+) {
+  const res = await request(viewsAPI.url,{
+    ...viewsAPI,
+    params:{
+      ...params
+    }
+  });
+  if(res.status===0){
+    return res.data;
+  }
+}
+
+// 个人喜欢的作品
+export async function mime(
+  params
+) {
+  const res = await request(mimeAPI.url,{
+    ...mimeAPI,
+    params:{
+      ...params
+    }
+  });
+  if(res.status===0){
+    return res.data;
+  }
+}
+

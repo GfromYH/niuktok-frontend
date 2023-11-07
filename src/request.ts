@@ -6,6 +6,7 @@ import {setLocalStorage,getLocalStorage,removeLocalStorage} from '@/utils/storag
 enum ErrorShowType {
   REGISTERED = 1000, // 用户已注册
   EXPIRED_TOKEN = 8, // token过期
+  UNAUTHORIZE = 5, // token过期
   // EXPIRED_TOKEN = 8, // token过期
 }
 // 与后端约定的响应数据格式
@@ -86,6 +87,8 @@ export const request: RequestConfig = {
          
           case ErrorShowType.REGISTERED:
             antdMessage.error(data.message);
+            break;
+          case ErrorShowType.UNAUTHORIZE:
             break;
           case ErrorShowType.EXPIRED_TOKEN:
             antdMessage.error("token已过期，请重新登录！");

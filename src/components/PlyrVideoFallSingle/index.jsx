@@ -16,6 +16,7 @@ import {
   ExpandOutlined
 } from '@ant-design/icons';
 import { ACTION_ACTIVE_COLOR, ACTION_NORMAL_COLOR } from '@/common/enum';
+import { like,storage,cancelLike,cancelStorage } from '@/services/interactive'
 
 
 const PlyrVideoFallSingle = (props)=>{
@@ -45,9 +46,14 @@ const PlyrVideoFallSingle = (props)=>{
     }
   }, []);
 
-  const handleLike=()=>{
-    setIsLike(!isLike)
-    message.success(!isLike?"已点赞！":"已取消！")
+  const handleLike=async()=>{
+    const requestFucn = !isLike?like:cancelLike;
+    await requestFucn({videoID:id},()=>{
+      // fetchVideos()
+      setIsLike(!isLike)
+      message.success(!isLike?"已点赞！":"已取消！")
+    })
+ 
   }
 
   const handleCommit=()=>{
@@ -90,6 +96,7 @@ const PlyrVideoFallSingle = (props)=>{
     }
   }
 
+
   return (
     <div id={id}   className={styles.plyrContainer} style={style}>
       <video
@@ -110,8 +117,8 @@ const PlyrVideoFallSingle = (props)=>{
       <ExpandOutlined onClick={handleEnter} className={styles.enterIcon} />
       <Flex className={styles.info} justify='space-between' align='center'>
         <Space  style={{fontSize:16}}  size={10} >
-          <LikeOutlined name="点赞" />
-          <span>{likeNum||0}</span>
+          <LikeOutlined style={{color:isLike&&ACTION_ACTIVE_COLOR.LIKE}} name="点赞" onClick={handleLike} />
+          <span>{isLike ?likeNum+1:likeNum}</span>
         </Space>
         <Space style={{fontSize:16}} direction='vertical' align='end' size={10}>
           <span>{createdTime||'-'}</span>
@@ -143,7 +150,8 @@ PlyrVideoFallSingle.propTypes={
   onEdit:PropTypes.func,
   onDelete:PropTypes.func,
   customEnter:PropTypes.func,
-  data:PropTypes.object
+  data:PropTypes.object,
+  fetchVideos:PropTypes.func
 }
 
 PlyrVideoFallSingle.defaultProps={
@@ -155,7 +163,8 @@ PlyrVideoFallSingle.defaultProps={
   onEdit:()=>{},
   onDelete:()=>{},
   customEnter:()=>{},
-  data:{}
+  data:{},
+  fetchVideos:()=>{}
 }
 
 export default PlyrVideoFallSingle

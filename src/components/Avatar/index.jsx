@@ -9,7 +9,7 @@ import {login, register} from '@/services/user'
 import {userStore} from '@/store';
 
 const Avatar = (props) => {
-  const {name,size} = props
+  const {name,size,url} = props
   const [open, setOpen] = useState(false)
   const {user,isLogin} = userStore()
   
@@ -27,11 +27,12 @@ const Avatar = (props) => {
   const AvatarContent =      
   <AntdAvatar 
     {...props}
-    style={{ backgroundColor: '#f56a00', verticalAlign: 'middle', cursor:"pointer" }} 
+    style={{  verticalAlign: 'middle', cursor:"pointer" }} 
     size={size}
     onClick={isLogin?()=>{history.push(`/self`)}:handleVisibleLogin}
+    src={url}
   >
-    {user?.username||name}
+    {name}
   </AntdAvatar>
   return (
     <>

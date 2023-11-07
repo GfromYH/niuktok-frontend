@@ -1,12 +1,14 @@
 import {useEffect, useRef,useState,useCallback,useLayoutEffect} from 'react';
+import {Flex,Button} from 'antd'
 import styles from './index.less';
 import PlyrVideoFallSingle from '../PlyrVideoFallSingle';
 import PropTypes from 'prop-types'
 
 const PlyrVideoFall=(props)=>{
-  const {gap,isWork,onDelete,onEdit,enter,videos} = props;
+  const {gap,isWork,onDelete,onEdit,enter,videos,fetchVideos,loading} = props;
   const fallRef=useRef(null)
   const [width,setWidth] = useState(0)
+  const [top,setTop] = useState(0);
   // const [videos,setVideos] = useState([])
   useEffect(() => {
     const clientWidth=fallRef.current?.clientWidth;
@@ -96,22 +98,30 @@ const PlyrVideoFall=(props)=>{
      for(let i = 0;i < items.length; i++){
         const item = document.getElementById(items[i].id)||{style:{}};
         item.style.width=`${itemWidth}px`;
+        let top=0;
         // item.style.height=`${Math.random(0,1)* 250}px`
          if(i < columns) {
              //满足这个条件则说明在第一行，文章里面有提到
             item.style.transform=`translate(${itemWidth*i-gap}px,0)`;
             arrW.push(itemWidth*i-gap);
             arr.push(item.offsetHeight+gap);
+            top=item.offsetHeight+gap;
          }else {
              //其他行，先找出最小高度列，和索引
              //假设最小高度是第一个元素
              let minHeight = arr[0];
              let index = 0;
+             let maxHeight=arr[0]
+             let mindex=0;
              for(let j = 0; j < arr.length; j++){//找出最小高度
                 if(minHeight > arr[j]){
                     minHeight = arr[j];
                     index = j;
                 } 
+                if(maxHeight<arr[j]){
+                  maxHeight=arr[j];
+                  mindex=j;
+                }
              }
              //设置下一行的第一个盒子的位置
              //top值就是最小列的高度+gap
@@ -119,6 +129,10 @@ const PlyrVideoFall=(props)=>{
              //修改最小列的高度
              //最小列的高度 = 当前自己的高度 + 拼接过来的高度 + 间隙的高度
              arr[index] = arr[index] + item.offsetHeight + gap;
+             top=maxHeight+gap;
+         }
+         if(i===items.length-1){
+          setTop(top)
          }
      }
   }
@@ -137,22 +151,28 @@ const PlyrVideoFall=(props)=>{
               onEdit={onEdit}
               customEnter={enter}
               data={item}
+              fetchVideos={()=>fetchVideos(videos.length)}
             />
           )
         })
       }
+      <Flex justify='center' align='center' style={{position:'absolute', top:top,left:'50%',transform:"translateX(-50%)"}}>
+        <Button loading={loading} type='link' onClick={()=>{fetchVideos(videos.length+4)}}>加载更多</Button>
+     </Flex>
     </div>
   )
  
 }
 
-PlyrVideoFall.propTyeps = {
+PlyrVideoFall.propTypes = {
   videos: PropTypes.array.isRequired,
   gap:PropTypes.number.isRequired, //瀑布流上下之间的间距
   isWork:PropTypes.bool.isRequired,
   onEdit:PropTypes.func.isRequired,
   onDelete:PropTypes.func.isRequired,
-  enter: PropTypes.func.isRequired
+  enter: PropTypes.func.isRequired,
+  fetchVideos:PropTypes.func,
+  loading:PropTypes.bool
 }
 
 PlyrVideoFall.defaultProps = {
@@ -161,7 +181,9 @@ PlyrVideoFall.defaultProps = {
   isWork:false,
   onEdit:()=>{},
   onDelete:()=>{},
-  enter:()=>{}
+  enter:()=>{},
+  fetchVideos:()=>{},
+  loading:false
 }
 
 
