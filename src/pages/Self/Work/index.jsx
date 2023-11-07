@@ -6,6 +6,7 @@ import Avatar from '@/components/Avatar';
 import Empty from '@/components/Empty'
 import PlyrVideoFall from '@/components/PlyrVideoFall'
 import AddWorkModal from '../components/AddWorkModal'
+import {getQiniuToken} from '@/services/video'
 
 const MODAL_TYPE={
   ADD:0, //新建
@@ -20,12 +21,15 @@ const Work = () => {
   const [title,setTitile] = useState('');
   const [modalType,setModalType] = useState(MODAL_TYPE.ADD); 
   const [modal,contextHolder]=Modal.useModal()
+  const [token,setToken]  = useState('')
   const config = {
     title: '删除视频',
     content: "该操作不可逆，确定要删除该视频吗？",
   };
-  const handleAddWork=()=>{
+  const handleAddWork=async()=>{
+    const token = await getQiniuToken();
     setTitile('新建作品')
+    setToken(token);
     setModalType(MODAL_TYPE.ADD);
     setIsModalOpen(true)
   }
@@ -55,11 +59,11 @@ const Work = () => {
       <Space style={{marginBottom:20}}>
         <Button type='primary' onClick={handleAddWork}>新建作品</Button>
       </Space>
-      {/* <Empty des='暂无数据'></Empty> */}
-      <PlyrVideoFall isWork={true} onEdit={handleEditVisible} onDelete={handleDelete} />
+      <Empty des='暂无数据'></Empty>
+      {/* <PlyrVideoFall isWork={true} onEdit={handleEditVisible} onDelete={handleDelete} /> */}
       </div>
       {contextHolder}
-      <AddWorkModal title={title} form={workForm} open={isModalOpen} onCancel={()=>setIsModalOpen(false)} onOk={hadleUploadWork}></AddWorkModal>
+      <AddWorkModal form={workForm} token={token} title={title} open={isModalOpen} onCancel={()=>setIsModalOpen(false)} ></AddWorkModal>
     </>
   );
 };

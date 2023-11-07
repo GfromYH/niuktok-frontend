@@ -91,7 +91,7 @@ const defaults = {
   // Keyboard shortcut settings
   keyboard: {
     focused: true,
-    global: true,
+    global: false,
   },
 
   // Display tooltips

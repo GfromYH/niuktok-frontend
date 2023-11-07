@@ -40,27 +40,14 @@ const Routes = [
   },
   {
     path: '/sport',
-    component: '@/layouts/BasicLayout',
     name: '体育',
-    layout: false,
-    icon: BarChartOutlined,
-    routes: [
-      {
-        path: '',
-        component: '@/pages/Sport'
-      }
-    ]
-  },
-  {
-    path: '/game',
-    name: '游戏',
     component: '@/layouts/BasicLayout',
     layout: false,
     icon: AppstoreOutlined,
     routes: [
       {
         path: '',
-        component: '@/pages/Game'
+        component: '@/pages/Sport'
       }
     ]
   },

@@ -2,13 +2,16 @@ import {useState} from 'react'
 import styles from './index.less';
 import Popover from '../Popover';
 import PropTypes from 'prop-types';
-import {Avatar as AntdAvatar} from 'antd'
+import {history} from '@umijs/max'
+import {Avatar as AntdAvatar, Spin, message} from 'antd'
 import LoginModal from '../LoginModal'
+import {login, register} from '@/services/user'
+import {userStore} from '@/store';
 
 const Avatar = (props) => {
   const {name,size} = props
   const [open, setOpen] = useState(false)
-
+  const {user,isLogin} = userStore()
   
 
   /**
@@ -20,25 +23,23 @@ const Avatar = (props) => {
     setOpen(true)
     // TODO 已登录情况下
   }
-  const handleSubmit=(data)=>{
-    console.log(data)
-    setOpen(false)
-  }
+ 
   const AvatarContent =      
   <AntdAvatar 
     {...props}
-    style={{ backgroundColor: '#f56a00', verticalAlign: 'middle', cursor:'pointer' }} 
+    style={{ backgroundColor: '#f56a00', verticalAlign: 'middle', cursor:"pointer" }} 
     size={size}
-    onClick={handleVisibleLogin}
+    onClick={isLogin?()=>{history.push(`/self`)}:handleVisibleLogin}
   >
-    {name}
+    {user?.username||name}
   </AntdAvatar>
   return (
     <>
-      <Popover text={AvatarContent} description={"享受高清资源"}></Popover>
+      {!isLogin?<Popover text={AvatarContent} description={"享受高清资源"}></Popover>:
+        AvatarContent
+      }
       <LoginModal
         open={open}
-        onFinish={handleSubmit}
         onClose={()=>setOpen(false)}
       />
     </>

@@ -21,19 +21,14 @@ import CommitPanel from '@/components/CommitPanel'
 
 
 const PlyrVideoSwipper = (props) => {
-  const {nextFuncAPI,preFuncAPI,videos,fixed,exit} = props
+  const {nextFuncAPI,preFuncAPI,videos,fixed,exit,fetchVideos} = props
   const { name } = useModel('global');
   const ref= useRef(null)
   const commitRef = useRef(null);
-  const [videoGroup,setVideoGroup] = useState([])
   const [videoIndex,setVideoIndex] = useState(0)
-  useEffect(()=>{
-    setVideoGroup([
-      <PlyrVideo key="id1" toggleCommitPanel={togglePanel}></PlyrVideo>,
-      <PlyrVideo key="id2" toggleCommitPanel={togglePanel}></PlyrVideo>,
-      <PlyrVideo key="id3" toggleCommitPanel={togglePanel}></PlyrVideo>
-    ])
-  },[])
+  // useEffect(()=>{
+  //   if
+  // },[])
   const handlePre=()=>{
     let videoIndexCp=videoIndex
     if(videoIndexCp===0) {
@@ -44,18 +39,20 @@ const PlyrVideoSwipper = (props) => {
     let calcString=fixed?`calc( ${videoIndexCp} * ( -100vh - 12px ) )`:`calc( ${videoIndexCp} * ( -100vh + 72px ) )`;
     ref.current.style.transform=`translateY(${calcString})`;
     setVideoIndex(videoIndexCp)
-    setVideoGroup(videoGroup)
-    preFuncAPI();
   }
   const handleNext=()=>{
     let videoIndexCp=videoIndex
-    if(videoIndexCp===videoGroup.length-1) videoGroup.push(<PlyrVideo toggleCommitPanel={togglePanel}></PlyrVideo>);
+    if(videoIndexCp===videos.length){
+      message.info("已经到底了！");
+      return;
+    }
+    if(videoIndexCp===videos.length-2) {
+      fetchVideos(videos.length+10)
+    }
     videoIndexCp+=1;
     let calcString=fixed?`calc(${videoIndexCp}*( -100vh - 12px))`:`calc(${videoIndexCp}*( -100vh + 72px ))`;
     ref.current.style.transform=`translateY(${calcString})`;
-    setVideoGroup(videoGroup)
     setVideoIndex(videoIndexCp)
-    nextFuncAPI()
   }
   const togglePanel=(value)=>{
     console.log(commitRef.current)
@@ -67,7 +64,9 @@ const PlyrVideoSwipper = (props) => {
     })}>
       <div ref={ref} className={styles.video} style={{height:'100%'}}>
         {
-          videoGroup.map((item)=>item)
+          videos.map((item)=>{
+            return <PlyrVideo key={item.id} id={item.id} data={item} toggleCommitPanel={togglePanel} ></PlyrVideo>
+          })
         }
       </div>
       <div ref={commitRef} style={{width:'30%',display:'none'}}>
@@ -88,7 +87,8 @@ PlyrVideoSwipper.propTypes={
   nextFuncAPI: PropTypes.func.isRequired,
   preFuncAPI: PropTypes.func.isRequired,
   fixed: PropTypes.bool.isRequired,
-  exit:PropTypes.func
+  exit:PropTypes.func,
+  fetchVideos:PropTypes.func
 }
 
 
@@ -98,7 +98,8 @@ PlyrVideoSwipper.defaultProps={
   nextFuncAPI: ()=>console.log("下一个"),
   preFuncAPI: ()=>console.log("上一个"),
   fixed:false,
-  exit:()=>{}
+  exit:()=>{},
+  fetchVideos:()=>{}
 }
 
 export default PlyrVideoSwipper;

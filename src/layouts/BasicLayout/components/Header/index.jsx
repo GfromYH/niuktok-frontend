@@ -6,6 +6,7 @@ import {theme,Flex,Space,Input} from 'antd'
 import Popover from '@/components/Popover'
 import Avatar from '@/components/Avatar'
 import { AudioOutlined } from '@ant-design/icons';
+import {userStore} from '@/store'
 
 const { Search } = Input;
 
@@ -15,6 +16,7 @@ const Header = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const {isLogin} = userStore()
   const [searchParams,setSearchParams]= useSearchParams()
   useEffect(()=>{
     const s = searchParams.get('s');
@@ -48,7 +50,7 @@ const Header = () => {
           onSearch={onSearch}
         />
         <Space size={20} align='center'>
-          <Popover text='消息' description='这是一条测试消息' buttonFuc={()=>console.log("aaa")} buttonText="立即登陆"></Popover>
+          <Popover hideButton text='消息' description='这是一条测试消息' buttonFuc={()=>console.log("aaa")} buttonText="立即登陆"></Popover>
           <Avatar name='登录' url="" ></Avatar>
         </Space>
       </Flex>

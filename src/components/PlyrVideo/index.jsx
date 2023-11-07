@@ -4,7 +4,7 @@ import "plyr/dist/plyr.css";
 import PropTypes from 'prop-types';
 import settings from './default';
 import styles from './index.less';
-import { Space,message } from 'antd';
+import { Space,message,Avatar } from 'antd';
 import {
   LikeFilled,
   MessageFilled,
@@ -14,11 +14,11 @@ import {
   DownCircleFilled
 } from '@ant-design/icons';
 import { ACTION_ACTIVE_COLOR, ACTION_NORMAL_COLOR } from '@/common/enum';
-import Avatar from '../Avatar';
 
 
 const PlyrVideo = (props)=>{
-  const { videoSrc,videoType,style,hideActionBar,toggleCommitPanel } = props;
+  const { videoSrc,videoType,style,hideActionBar,toggleCommitPanel,data } = props;
+  const {coverPath,videoPath,title,description,viewNum,likeNum,favoriteNum,shareNum,mimeType,createdTime} = data;
   const [isLike,setIsLike] = useState(false);
   const [isStorage,setIsStorage] = useState(false);
   const videoRef = useRef();
@@ -26,7 +26,6 @@ const PlyrVideo = (props)=>{
     if(!videoRef.current) return;
 
     const playerInstance = new Plyr(videoRef.current, settings);
-    
     playerInstance.on("enterfullscreen",(e)=>{
       // console.log(e)
       videoRef.current.style.width='100%';
@@ -61,8 +60,8 @@ const PlyrVideo = (props)=>{
   }
   return (
     <div className={styles.plyrContainer} style={style}>
-      <video className={styles.plyrVideo}  ref={videoRef} controls  playsInline>
-        <source size={576} src={videoSrc} type={videoType || 'video/mp4'} />
+      <video className={styles.plyrVideo} poster={coverPath}  ref={videoRef} controls  playsInline>
+        <source size={576}  src={videoPath} type={mimeType || 'video/mp4'} />
       </video>
       <Space style={{display: hideActionBar && 'none'}} className={styles.actionBar} align='center' direction='vertical' size={20}>
         {/* <Space direction='vertical' size={10}>
@@ -71,24 +70,24 @@ const PlyrVideo = (props)=>{
         </Space> */}
         <Space direction='vertical'  size={10} onClick={handleLike} >
           <LikeFilled style={{color:isLike?ACTION_ACTIVE_COLOR.LIKE:ACTION_NORMAL_COLOR.LIKE}} name="点赞" />
-          <span>233.2万</span>
+          <span>{likeNum||0}</span>
         </Space>
         <Space direction='vertical'  size={10} onClick={()=>handleCommit('initial')} >
           <MessageFilled name="评论" />
-          <span>233.2万</span>
+          <span>0</span>
         </Space>
         <Space direction='vertical'  size={10} onClick={handleStorage} >
           <StarFilled name="收藏" style={{color:isStorage?ACTION_ACTIVE_COLOR.STORAGE:ACTION_NORMAL_COLOR.STORAGE}} />
-          <span>233.2万</span>
+          <span>{favoriteNum||0}</span>
         </Space>
         <Space direction='vertical' size={10} onClick={handleShare} >
           <ShareAltOutlined name="分享" />
-          <span>233.2万</span>
+          <span>{shareNum||0}</span>
         </Space>
       </Space>
       <Space direction='vertical' size={20} align='start' className={styles.videoInfo}>
         <Avatar size={36}></Avatar>
-        <p name="这是一条视频描述">这是一条视频的描述这是一条视频的描述这是一条视频的描述这是一条视频的描述这是一条视频的描述</p>
+        <p name="这是一条视频描述">{description}</p>
       </Space>
 
     </div>
@@ -97,17 +96,19 @@ const PlyrVideo = (props)=>{
 
 
 PlyrVideo.propTypes={
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   videoSrc: PropTypes.string.isRequired,
   videoType: PropTypes.string.isRequired,
   hideActionBar: PropTypes.bool.isRequired,
-  toggleCommitPanel:PropTypes.func.isRequired
+  toggleCommitPanel:PropTypes.func.isRequired,
+  data:PropTypes.object.isRequired
 }
 
 PlyrVideo.defaultProps={
   id: '#player',
   videoSrc: "https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4",
   videoType: "",
+  data:{},
   hideActionBar: false,
   toggleCommitPanel:()=>{}
 }

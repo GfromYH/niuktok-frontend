@@ -19,7 +19,8 @@ import { ACTION_ACTIVE_COLOR, ACTION_NORMAL_COLOR } from '@/common/enum';
 
 
 const PlyrVideoFallSingle = (props)=>{
-  const { id,videoSrc,videoType,style,hideActionBar,isWork,onEdit,onDelete,customEnter } = props;
+  const { id,style,hideActionBar,isWork,onEdit,onDelete,customEnter,data } = props;
+  const {coverPath,videoPath,title,description,viewNum,likeNum,favoriteNum,shareNum,mimeType,createdTime,userId} = data;
   const [isLike,setIsLike] = useState(false);
   const [isStorage,setIsStorage] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -96,8 +97,9 @@ const PlyrVideoFallSingle = (props)=>{
         className={styles.plyrVideo}  
         ref={videoRef} 
         controls  
+        poster={coverPath}
         playsInline>
-          <source size={576} src={videoSrc} type={videoType || 'video/mp4'} />
+          <source size={576} src={videoPath} type={mimeType || 'video/mp4'} />
        
       </video>
       {/* <div
@@ -109,19 +111,19 @@ const PlyrVideoFallSingle = (props)=>{
       <Flex className={styles.info} justify='space-between' align='center'>
         <Space  style={{fontSize:16}}  size={10} >
           <LikeOutlined name="点赞" />
-          <span>233.2万</span>
+          <span>{likeNum||0}</span>
         </Space>
         <Space style={{fontSize:16}} direction='vertical' align='end' size={10}>
-          <span>2023-11-2</span>
-          <span>@ GJH</span>
+          <span>{createdTime||'-'}</span>
+          <span>@ {userId}</span>
         </Space>
       </Flex>
       {
         isWork ?
         <Flex className={styles.info} justify='space-between' align='center'>
         <Space  style={{fontSize:16}}  size={10} >
-          <Button  type='link' onClick={onEdit}>修改</Button>
-          <Button danger type='link' onClick={onDelete}>删除</Button>
+          <Button  type='link' onClick={()=>onEdit(id)}>修改</Button>
+          <Button danger type='link' onClick={()=>onDelete(id)}>删除</Button>
         </Space>
         </Flex>:
         <></>
@@ -132,7 +134,7 @@ const PlyrVideoFallSingle = (props)=>{
 
 
 PlyrVideoFallSingle.propTypes={
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   videoSrc: PropTypes.string.isRequired,
   videoType: PropTypes.string.isRequired,
   hideActionBar: PropTypes.bool.isRequired,
@@ -140,7 +142,8 @@ PlyrVideoFallSingle.propTypes={
   isWork:PropTypes.bool,
   onEdit:PropTypes.func,
   onDelete:PropTypes.func,
-  customEnter:PropTypes.func
+  customEnter:PropTypes.func,
+  data:PropTypes.object
 }
 
 PlyrVideoFallSingle.defaultProps={
@@ -151,7 +154,8 @@ PlyrVideoFallSingle.defaultProps={
   isWork:false,
   onEdit:()=>{},
   onDelete:()=>{},
-  customEnter:()=>{}
+  customEnter:()=>{},
+  data:{}
 }
 
 export default PlyrVideoFallSingle

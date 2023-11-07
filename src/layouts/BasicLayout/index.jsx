@@ -12,9 +12,12 @@ import {
 import { NavLink } from 'umi'
 import { Layout, Menu, theme } from 'antd';
 import { Outlet } from 'umi'
+import {info} from '@/services/user'
 import Logo from '@/components/Logo';
 import Routes from '@/routes';
 import Header from './components/Header'
+import { setLocalStorage } from '@/utils/storage';
+import {userStore} from '@/store';
 
 const {  Content, Footer, Sider } = Layout;
 
@@ -49,16 +52,19 @@ const items = () => {
 
 
 
-const BasicLayout = () => {
+const BasicLayout = (props) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   const {pathname}=location;
   const [layoutMarginLeft,setLayoutMarginLeft]=useState(200);
-
+  const {getInfo,user} = userStore()
   const onBreakpoint=(broken)=>{
    setLayoutMarginLeft(broken?0:200)
   }
+  useEffect(()=>{
+    getInfo()
+  },[])
   
   return (
     <Layout hasSider style={{minHeight:'100vh'}}>

@@ -1,24 +1,48 @@
 import React, { useState } from 'react';
 import styles from './index.less';
 import PropTypes from 'prop-types';
-import { Modal, Form, Input, Button } from 'antd'
+import {login, register} from '@/services/user'
+import { Modal, Form, Input, Button,message } from 'antd'
+import {userStore} from '@/store'
 
 const BLOCK_TYPE={
   LOGIN: 0,
   REGISTER: 1,
   FORGET: 2
 }
+
+const IDENTITY_TYPE={
+  IDENTIDFIER: 0, // 用户名
+  PHONE: 1, // 手机
+  EMAIL: 2 // 邮箱
+}
 const TITLE = ["登录",'注册','忘记密码']
 
 // 用户登录注册组件
 const LoginModal = (props) => {
-  const { open, onFinish, onClose } = props
-  const [loginForm] = Form.useForm();
-  const [regesterForm] = Form.useForm();
+  const { open, onClose } = props
+  const [form] = Form.useForm();
   const [type, setType] = useState(BLOCK_TYPE.LOGIN)
+  const [identityType, setIdentityType] = useState(IDENTITY_TYPE.IDENTIDFIER)
   const [passwordVisible, setPasswordVisible] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const {getInfo} = userStore()
 
+  const onFinish=async(data,type,cb)=>{
+    console.log(data)
+    const requestFunc=[login,register][type]
+    const params=[data,{...data,username:data.identifier}][type]
+    const infoMessage=['登录成功！','注册成功！'][type];
+    setLoading(true)
 
+    const result=await requestFunc(params,async()=>{
+      message.success(infoMessage);
+      cb();
+      await getInfo()
+      onClose()
+    });
+    setLoading(false);
+  }
   /**
    * 
    * @param {number} key BLOCK_TYPE
@@ -33,47 +57,43 @@ const LoginModal = (props) => {
         return LoginBlock;
     }
   }
+  const handleSumbmit=async()=>{
+    const data = await form.validateFields();
+    onFinish({...data,identityType},type,()=>{
+      form.resetFields()
+    })
+  }
   const LoginBlock=(
-    <Form
-      form={loginForm}
-      name="loginForm"
-      onFinish={onFinish}
-      style={{ maxWidth: 480 }}
-    >
-      <Form.Item name="username" rules={[{ required: true }]}>
+    <>
+      <Form.Item name="identifier" rules={[{ required: true, message:'用户名不能为空' }]}>
         <Input placeholder='用户名' />
       </Form.Item>
-      <Form.Item name="password" rules={[{ required: true }]}>
+      <Form.Item name="credential" rules={[{ required: true, message:'密码不能为空' }]}>
         <Input.Password visibilityToggle={{ visible: passwordVisible, onVisibleChange: setPasswordVisible }} placeholder='密码'   />
       </Form.Item>
       <Form.Item style={{marginBottom: 12}}>
-        <Button type="primary" >登录 </Button>
+        <Button type="primary"  onClick={handleSumbmit} loading={loading} >登录 </Button>
       </Form.Item>
       <Form.Item style={{marginBottom: 0}}>
         <Button type="link" onClick={()=>setType(BLOCK_TYPE.REGISTER)}>快速注册 </Button>
       </Form.Item>
-    </Form>
+    </>
   )
   const RegesterBlock=(
-    <Form
-      form={regesterForm}
-      name="regesterForm"
-      onFinish={onFinish}
-      style={{ maxWidth: 480 }}
-    >
-      <Form.Item name="username" rules={[{ required: true }]}>
+    <>
+      <Form.Item name="identifier" rules={[{ required: true, message:'用户名不能为空' }]}>
         <Input placeholder='用户名' />
       </Form.Item>
-      <Form.Item name="password" rules={[{ required: true }]}>
+      <Form.Item name="credential" rules={[{ required: true, message:'密码不能为空'  }]}>
         <Input.Password visibilityToggle={{ visible: passwordVisible, onVisibleChange: setPasswordVisible }} placeholder='密码' />
       </Form.Item>
       <Form.Item style={{marginBottom: 12}}>
-        <Button type="primary" >注册 </Button>
+        <Button type="primary" onClick={handleSumbmit} loading={loading} >注册 </Button>
       </Form.Item>
       <Form.Item style={{marginBottom: 0}}>
         <Button type="link" onClick={()=>setType(BLOCK_TYPE.LOGIN)}>返回登录 </Button>
       </Form.Item>
-    </Form>
+    </>
   )
 
   return (
@@ -84,7 +104,13 @@ const LoginModal = (props) => {
       onCancel={onClose}
     >
       <div className={styles.form}>
+      <Form
+        form={form}
+        name="form"
+        style={{ maxWidth: 480 }}
+      >
         {getBlock(type)}
+      </Form>
       </div>
     </Modal>
   );
@@ -92,14 +118,12 @@ const LoginModal = (props) => {
 
 LoginModal.propTypes={
   open: PropTypes.bool.isRequired,
-  onFinish: PropTypes.func,
-  onClose: PropTypes.func
+  onClose: PropTypes.func,
 }
 
 LoginModal.defaultProps = {
   open: true,
-  onFinish: (data)=> console.log(data) ,
-  onClose: ()=> console.log("关闭") 
+  onClose: ()=> console.log("关闭"),
 };
 
 

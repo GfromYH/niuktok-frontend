@@ -4,32 +4,32 @@ import PlyrVideoFallSingle from '../PlyrVideoFallSingle';
 import PropTypes from 'prop-types'
 
 const PlyrVideoFall=(props)=>{
-  const {gap,isWork,onDelete,onEdit,enter} = props;
+  const {gap,isWork,onDelete,onEdit,enter,videos} = props;
   const fallRef=useRef(null)
-  const [videos,setVideos] = useState([])
-  useLayoutEffect(() => {
-    const clientWidth=fallRef.current.clientWidth;
-    const columns = _perColumnNum(fallRef.current.clientWidth);
+  const [width,setWidth] = useState(0)
+  // const [videos,setVideos] = useState([])
+  useEffect(() => {
+    const clientWidth=fallRef.current?.clientWidth;
+    const columns = _perColumnNum(fallRef.current?.clientWidth);
     let itemWidth = Math.floor(clientWidth/columns);
-    const videos = new Array(14);
-    for (let i = 0; i < videos.length; i++) {
-      videos[i] = (
-        <PlyrVideoFallSingle
-          key={`play${i}`}
-          id={`play${i}`}
-          style={{ width: itemWidth }}
-          isWork={isWork}
-          onDelete={onDelete}
-          onEdit={onEdit}
-          customEnter={enter}
-        />
-      );
-    }
-    setVideos(videos);
+    setWidth(itemWidth)
+    // for (let i = 0; i < videos.length; i++) {
+    //   videos[i] = (
+    //     <PlyrVideoFallSingle
+    //       key={`play${i}`}
+    //       id={`play${i}`}
+    //       style={{ width: itemWidth }}
+    //       isWork={isWork}
+    //       onDelete={onDelete}
+    //       onEdit={onEdit}
+    //       customEnter={enter}
+    //     />
+    //   );
+    // }
+    // setVideos(videos);
    // 在下一个事件循环中获取元素
-   setTimeout(() => {
-    waitFall(videos)
-  }, 0);
+  //  waitFall(videos)
+  waitFall(videos)
   // window.addEventListener('resize',()=>{
   //   console.log("aaaa",fallRef.current.clientWidth)
   //   waitFall(videos)
@@ -37,9 +37,10 @@ const PlyrVideoFall=(props)=>{
   // return ()=>{
   //   window.removeEventListener('resize',()=>{})
   // }
+  const fallEle=document.getElementById("fall")
   const resizeHandler = (entries) => {
     for (const entry of entries) {
-      if (entry.target === fallRef.current) {
+      if (entry.target === fallEle) {
         // 处理resize事件
         // console.log('Component resized');
         waitFall(videos)
@@ -48,13 +49,17 @@ const PlyrVideoFall=(props)=>{
   };
 
   const observer = new ResizeObserver(resizeHandler);
-  observer.observe(fallRef.current);
-
-  return () => {
-    observer.unobserve(fallRef.current);
-  };
+  observer.observe(fallEle);
+  return ()=>{
+    observer.unobserve(fallEle);
+  }
+  // return () => {
+  //   if(fallRef.current){
+  //     observer.unobserve(fallEle);
+  //   }
+  // };
       // waitFall(videos,fallRef.current.clientWidth,num)
-  }, [fallRef]);
+  }, [videos.length]);
   // useEffect(()=>{
   //   const num = _perColumnNum(fallRef.current.clientWidth);
   //   const itemWidth = Math.floor(fallRef.current.clientWidth/num);
@@ -80,15 +85,16 @@ const PlyrVideoFall=(props)=>{
   }
 
   const waitFall=(items)=>{
-    const clientWidth=fallRef.current.clientWidth;
-    const columns = _perColumnNum(fallRef.current.clientWidth);
+    const clientWidth= document.getElementById("fall")?.clientWidth
+    // const clientWidth=fallRef.current.clientWidth;
+    const columns = _perColumnNum(clientWidth);
      //首先确定列数 = 页面的宽度 / 图片的宽度
      let pageWidth = clientWidth;
      let itemWidth = Math.floor(clientWidth/columns);
      let arr = [];//定义一个数组，用来存储元素的高度
      let arrW = [];//定义一个数组，用来存储元素的距离左边的宽度
      for(let i = 0;i < items.length; i++){
-        const item = document.getElementById(`play${i}`)
+        const item = document.getElementById(items[i].id)||{style:{}};
         item.style.width=`${itemWidth}px`;
         // item.style.height=`${Math.random(0,1)* 250}px`
          if(i < columns) {
@@ -118,10 +124,21 @@ const PlyrVideoFall=(props)=>{
   }
   return  (
 
-    <div ref={fallRef} className={styles.container}>
+    <div id="fall" ref={fallRef} className={styles.container}>
       {
         videos.map((item)=>{
-          return item;
+          return (
+            <PlyrVideoFallSingle
+              key={item.id}
+              id={item.id}
+              style={{ width: width }}
+              isWork={isWork}
+              onDelete={onDelete}
+              onEdit={onEdit}
+              customEnter={enter}
+              data={item}
+            />
+          )
         })
       }
     </div>
